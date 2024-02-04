@@ -29,7 +29,6 @@ import json
 
 # API parameters
 VANTAGE_GET_FUNCTION = 'news_sentiment'
-VANTAGE_GET_LIMIT = '1000'
 VANTAGE_API_KEY = 'IT4DWFPBURJMRT3S'  # Replace with your actual API key
 
 #Load model
@@ -116,8 +115,8 @@ app.add_middleware(
     allow_methods=["*"],  # Allows all methods
     allow_headers=["*"],  # Allows all headers
 )
-@app.get("/") # http://127.0.0.1:8000/?company_name=Google&company_ticker=GOOG&time_from=20190101&time_to=20230101
-def get_stuff(company_name = "Google", company_ticker = "GOOG", time_from = "20190101", time_to = "20230101"):
+@app.get("/") # http://127.0.0.1:8000/?company_name=Google&company_ticker=GOOG&time_from=20190101&time_to=20230101&limit=10
+def get_stuff(company_name = "Google", company_ticker = "GOOG", time_from = "20190101", time_to = "20230101", limit = 10):
 
     # Adjust time_from and time_to to include time (assuming start of day to end of day)
     time_from += "T0000"
@@ -128,7 +127,7 @@ def get_stuff(company_name = "Google", company_ticker = "GOOG", time_from = "201
 
     # Iterate over the company tickers to make API requests
 
-    url = f'https://www.alphavantage.co/query?function={VANTAGE_GET_FUNCTION}&tickers={company_ticker}&time_from={time_from}&time_to={time_to}&limit={VANTAGE_GET_LIMIT}&apikey={VANTAGE_API_KEY}'
+    url = f'https://www.alphavantage.co/query?function={VANTAGE_GET_FUNCTION}&tickers={company_ticker}&time_from={time_from}&time_to={time_to}&limit={limit}&apikey={VANTAGE_API_KEY}'
     print(url)
     response = requests.get(url)
     print("Working...")

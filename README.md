@@ -50,7 +50,7 @@ docker push eu.gcr.io/potent-odyssey-413213/finance-news-api:prod
 
 5) Deploy the docker container on GCP
 ```
-gcloud run deploy --image eu.gcr.io/potent-odyssey-413213/finance-news-api:prod --memory "2Gi" --region "europe-west1" --max-instances 1 --port=8000 --timeout 60s
+gcloud run deploy --image eu.gcr.io/potent-odyssey-413213/finance-news-api:prod --memory "3Gi" --region "europe-west1" --max-instances 1 --port=8000 --timeout 60s
 ```
 
 6) Provide the following inputs
