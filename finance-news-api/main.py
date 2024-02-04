@@ -30,7 +30,7 @@ import json
 # API parameters
 VANTAGE_GET_FUNCTION = 'news_sentiment'
 VANTAGE_GET_LIMIT = '1000'
-VANTAGE_API_KEY = '95U19IY6L911X2OY'  # Replace with your actual API key
+VANTAGE_API_KEY = 'IT4DWFPBURJMRT3S'  # Replace with your actual API key
 
 #Load model
 task = "text-classification"
@@ -131,12 +131,12 @@ def get_stuff(company_name = "Google", company_ticker = "GOOG", time_from = "201
     url = f'https://www.alphavantage.co/query?function={VANTAGE_GET_FUNCTION}&tickers={company_ticker}&time_from={time_from}&time_to={time_to}&limit={VANTAGE_GET_LIMIT}&apikey={VANTAGE_API_KEY}'
     print(url)
     response = requests.get(url)
+    print("Working...")
     
     if not response.status_code == 200:
         return dict(error=f"Failed to retrieve data for {company_name}: {response.status_code}")
     
     data = response.json()
-    print(data)
     
     if 'feed' not in data:
         return dict(error=f"No articles found for {company_name}")
@@ -187,16 +187,54 @@ def get_stuff(company_name = "Google", company_ticker = "GOOG", time_from = "201
     # Now you have a DataFrame with the sentiment and score
     new_df = text_df[['Company','Authors','Time Published','Title & Summary','Preprocessed', 'Model Sentiment', 'Model Sentiment Score']]
 
+    print("Done.")
+
     return json.loads(new_df.to_json())
 
     #return dict(new_df=str(new_df.count()))
     
 
+@app.get("/ping") # Healthcheck endpoint
+def ping():
+    return dict(ping="ok")
+
+
+@app.get("/dummy") # endpoint for returning dummy data
+def dummy():
+    return {
+        "Company":{
+        "0":"Google",
+        "1":"Google"
+        },
+        "Authors":{
+        "0":"",
+        "1":"Ashley Capoot"
+        },
+        "Time Published":{
+        "0":"20230101T214500",
+        "1":"20230101T213259"
+        },
+        "Title & Summary":{
+        "0":"HZL forays into fertiliser production, to set up 0.5 MT plant in Rajasthan | The Financial Express HZL forays into fertiliser production, to set up 0.5 MT plant in Rajasthan The Financial Express ...",
+        "1":"More social media regulation is coming in 2023, members of Congress say Legislators and advocates say they are looking to further regulate social media companies in 2023."
+        },
+        "Preprocessed":{
+        "0":"hzl foray fertilis product , set 0.5 mt plant rajasthan | the financi express hzl foray fertilis product , set 0.5 mt plant rajasthan the financi express ...",
+        "1":"more social medium regul come 2023 , member congress say legisl advoc say look regul social medium compani 2023 ."
+        },
+        "Model Sentiment":{
+        "0":"neutral",
+        "1":"neutral"
+        },
+        "Model Sentiment Score":{
+        "0":0.9994545579,
+        "1":0.999353826
+        }
+    }
 
 @app.get("/predict") #Sentiment for each article
 def predict(text):
     text = classify_sentiment(text)
-    print(text)
     return text
 
 # Function to classify sentiment of a given text
