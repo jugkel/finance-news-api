@@ -10,8 +10,8 @@ COPY finance-news-api finance-news-api
 COPY setup.py setup.py
 RUN pip install .
 
-# COPY preload-model.py preload-model.py
-# RUN python preload-model.py
+COPY preload-model.py preload-model.py
+RUN python preload-model.py
 
 EXPOSE 8000
 

@@ -115,8 +115,12 @@ app.add_middleware(
     allow_methods=["*"],  # Allows all methods
     allow_headers=["*"],  # Allows all headers
 )
-@app.get("/") # http://127.0.0.1:8000/?company_name=Google&company_ticker=GOOG&time_from=20190101&time_to=20230101&limit=10
-def get_stuff(company_name = "Google", company_ticker = "GOOG", time_from = "20190101", time_to = "20230101", limit = 10):
+
+
+# https://finance-news-api-wb4oco6h6a-ew.a.run.app/?company_name=Google&company_ticker=GOOG&time_from=20190101&time_to=20230101&limit=10
+
+@app.get("/finalV01") # http://127.0.0.1:8000/?company_name=Google&company_ticker=GOOG&time_from=20190101&time_to=20230101&limit=10
+def get_stuff(company_name, company_ticker,time_from ,time_to, limit = 51):
 
     # Adjust time_from and time_to to include time (assuming start of day to end of day)
     time_from += "T0000"
@@ -184,7 +188,7 @@ def get_stuff(company_name = "Google", company_ticker = "GOOG", time_from = "201
     text_df['Model Sentiment Score'] = text_df['Preprocessed'].apply(lambda x: classify_sentiment(x)['score'])
 
     # Now you have a DataFrame with the sentiment and score
-    new_df = text_df[['Company','Authors','Time Published','Title & Summary','Preprocessed', 'Model Sentiment', 'Model Sentiment Score']]
+    new_df = text_df[['Company','Authors','Time Published','Title & Summary', 'Model Sentiment', 'Model Sentiment Score']]
 
     print("Done.")
 
@@ -193,9 +197,9 @@ def get_stuff(company_name = "Google", company_ticker = "GOOG", time_from = "201
     #return dict(new_df=str(new_df.count()))
     
 
-@app.get("/ping") # Healthcheck endpoint
-def ping():
-    return dict(ping="ok")
+#@app.get("/ping") # Healthcheck endpoint
+#def ping():
+    #return dict(ping="ok")
 
 
 @app.get("/dummy") # endpoint for returning dummy data
